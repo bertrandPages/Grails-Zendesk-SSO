@@ -23,7 +23,7 @@ The plugin isn't available yet on the official Grails plugin repository so you c
     See the License for the specific language governing permissions and
     limitations under the License.
 
-## Configuration
+## Configuration Grails
 
     zendesk {
         baseURL = "https://domain.zendesk.com/access/remoteauth"
@@ -45,4 +45,10 @@ The plugin isn't available yet on the official Grails plugin repository so you c
 * zendesk.lastnamePropertyName: Lastname property name of your user class, use to compose final name for zendesk
 * zendesk.namePropertyName: If there is no firstname and lastname, property name use to compose final name for zendesk
 
+## Configuration Zendesk
+
+To configure zendesk, login with admin user then go to "Parameters" > "Security" and enabled Single Sign On option
+Finally, fill the following parameters:
+
+![screen01](https://github.com/bertrandPages/Grails-Zendesk-SSO/raw/master/web-app/images/configuration/zendesk-parameters.png)
 
