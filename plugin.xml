@@ -7,7 +7,6 @@
   <documentation>http://grails.org/plugin/zendesk-sso</documentation>
   <type>ZendeskSsoGrailsPlugin</type>
   <resources>
-    <resource>plugin.grails.zendesk.sso.ZendeskController</resource>
     <resource>plugin.grails.zendesk.sso.ZendeskSSOService</resource>
   </resources>
   <repositories>
