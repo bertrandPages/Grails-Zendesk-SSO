@@ -1,3 +1,5 @@
+![screen01](https://github.com/bertrandPages/Grails-Zendesk-SSO/raw/master/web-app/images/logo/logo-zendesk-integration.png)
+
 # Grails Zendesk Single Sign On
 This project intend to provide a grails plugin to interact with zendesk and particularly with the remote auth functionality.
 
