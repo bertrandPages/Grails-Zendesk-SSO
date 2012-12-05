@@ -47,7 +47,7 @@ The plugin isn't available yet on the official Grails plugin repository so you c
 
 ## Configuration Zendesk
 
-To configure zendesk, login with admin user then go to "Parameters" > "Security" and enabled Single Sign On option
+To configure zendesk, login with admin user then go to "Parameters" > "Security" and enabled Single Sign On option.
 Finally, fill the following parameters:
 
 ![screen01](https://github.com/bertrandPages/Grails-Zendesk-SSO/raw/master/web-app/images/configuration/zendesk-parameters.png)
