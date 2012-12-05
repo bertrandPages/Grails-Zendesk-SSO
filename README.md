@@ -32,7 +32,7 @@ The plugin isn't available yet on the official Grails plugin repository so you c
 * zendesk.namePropertyName: If there is no firstname and lastname, property name use to compose final name for zendesk
 
 
-   zendesk {
+    zendesk {
         baseURL = "https://domain.zendesk.com/access/remoteauth"
         secret = "secrectSharedWithZendesk"
         externalId = true
