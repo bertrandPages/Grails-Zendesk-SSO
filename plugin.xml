@@ -1,4 +1,4 @@
-<plugin name='zendesk-sso' version='0.1.4' grailsVersion='2.0.4 &gt; *'>
+<plugin name='zendesk-sso' version='0.1.6.4' grailsVersion='2.0.4 &gt; *'>
   <author>Bertrand Pages</author>
   <authorEmail>bpages@doc4web.com</authorEmail>
   <title>Zendesk Sso Plugin</title>
@@ -15,6 +15,7 @@
     <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
     <repository name='grailsCore' url='http://svn.codehaus.org/grails/trunk/grails-plugins' />
     <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+    <repository name='http://grails.org/plugins' url='http://grails.org/plugins' />
   </repositories>
   <dependencies />
   <plugins />

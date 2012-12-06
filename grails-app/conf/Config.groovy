@@ -23,15 +23,5 @@ log4j = {
     warn   'org.mortbay.log'
 }
 
-zendesk {
-    baseURL = "https://domain.zendesk.com/access/remoteauth"
-    secret = "secrectSharedWithZendesk"
-    externalId = true
-    userDomainClassName = 'Person'
-    emailPropertyName = 'email'
-    firstnamePropertyName = 'firstname'
-    lastnamePropertyName = 'lastname'
-    namePropertyName = 'name'
-}
 grails.views.default.codec="none" // none, html, base64
 grails.views.gsp.encoding="UTF-8"

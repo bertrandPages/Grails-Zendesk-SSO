@@ -14,27 +14,27 @@ class ZendeskSSOService {
      * @return url to login in zendesk
      */
     def zendeskLoginBackURL(userId, timestamp, organization = null, tags = null, remotePhotoUrl = null){
-        String className = grailsApplication.config.zendesk.userDomainClassName
+        String className = grailsApplication.config.grails.plugins.zendesk.userDomainClassName
 
         def user = grailsApplication.getClassForName(className).get(userId)
 
-        def email = user.getAt(grailsApplication.config.zendesk.emailPropertyName)
+        def email = user.getAt(grailsApplication.config.grails.plugins.zendesk.emailPropertyName)
 
         def name = []
-        def firstname = user.getAt(grailsApplication.config.zendesk.firstnamePropertyName)
+        def firstname = user.getAt(grailsApplication.config.grails.plugins.zendesk.firstnamePropertyName)
         if(firstname){
             name << firstname
         }
-        def lastname = user.getAt(grailsApplication.config.zendesk.lastnamePropertyName)
+        def lastname = user.getAt(grailsApplication.config.grails.plugins.zendesk.lastnamePropertyName)
         if(lastname){
             name << lastname
         }
         if(name.size() == 0){
-            name << user.getAt(grailsApplication.config.zendesk.namePropertyName?:"")
+            name << user.getAt(grailsApplication.config.grails.plugins.zendesk.namePropertyName?:"")
         }
 
         def externalId = null
-        if(grailsApplication.config.zendesk.externalId){
+        if(grailsApplication.config.grails.plugins.zendesk.externalId){
             externalId = userId
         }
 
@@ -57,7 +57,7 @@ class ZendeskSSOService {
         params << entries.organization ?: ""
         params << entries.tags ?: ""
         params << entries.remote_photo_url ?: ""
-        params << grailsApplication.config.zendesk.secret
+        params << grailsApplication.config.grails.plugins.zendesk.secret
         params << entries.timestamp
         def input = params.join('|')
         return input.encodeAsMD5()
@@ -69,7 +69,7 @@ class ZendeskSSOService {
      * @return
      */
     private generateUrl(Map entries){
-        def url = grailsApplication.config.zendesk.baseURL + "?"
+        def url = grailsApplication.config.grails.plugins.zendesk.baseURL + "?"
         entries.hash = generateHash(entries)
         url += entries.findAll {it.value && it.value != ""}.collect {"${it.key}=${it.value}"}.join('&')
         return url
