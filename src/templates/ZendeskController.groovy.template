@@ -4,18 +4,17 @@ class ZendeskController {
     def springSecurityService
     def zendeskSSOService
 
-    def auth() {
-        def timestamp = params.timestamp
+    def authZendesk() {
+        def iat = params.iat
         if(springSecurityService.isLoggedIn()){
-            def config = grailsApplication.config
-            def userClass = grailsApplication.getClassForName(config.grails.plugins.zendesk.userDomainClassName)
+            def userClass = grailsApplication.getClassForName(grailsApplication.config.grails.plugins.zendesk.userDomainClassName)
             def user = springSecurityService.getCurrentUser()
             if(userClass.isInstance(user)){
-                redirect url:zendeskSSOService.zendeskLoginBackURL(user.id, timestamp)
+                redirect url:zendeskSSOService.zendeskLoginBackURL(user.id, params.return_to)
                 return
             }
         }
-        [timestamp:timestamp, error: params.error?:null]
+        [iat:iat, return_to:params.return_to, error: params.error?:null]
     }
 
     def logout() {
@@ -23,11 +22,12 @@ class ZendeskController {
         def external_id = params.external_id
         def kind = params.kind
         def message = params.message
+        def domain = grailsApplication.config.grails.plugins.zendesk.domain
 
         if(springSecurityService.isLoggedIn()){
             session.invalidate()
         }
 
-        [kind:kind, message:message]
+        [kind:kind, message:message, domain:domain]
     }
 }

@@ -1,12 +1,13 @@
-<plugin name='zendesk-sso' version='0.1.6.4' grailsVersion='2.0.4 &gt; *'>
+<plugin name='zendesk-sso' version='0.2.5' grailsVersion='2.0.4 &gt; *'>
   <author>Bertrand Pages</author>
   <authorEmail>bpages@doc4web.com</authorEmail>
   <title>Zendesk Sso Plugin</title>
-  <description>Brief summary/description of the plugin.
+  <description>This plugin allows application to interact with zendesk and particularly with the remote auth functionality.
 </description>
   <documentation>http://grails.org/plugin/zendesk-sso</documentation>
   <type>ZendeskSsoGrailsPlugin</type>
   <resources>
+    <resource>Zendesk2Resources</resource>
     <resource>plugin.grails.zendesk.sso.ZendeskSSOService</resource>
   </resources>
   <repositories>
@@ -15,9 +16,12 @@
     <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
     <repository name='grailsCore' url='http://svn.codehaus.org/grails/trunk/grails-plugins' />
     <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
-    <repository name='http://grails.org/plugins' url='http://grails.org/plugins' />
   </repositories>
-  <dependencies />
+  <dependencies>
+    <compile>
+      <dependency group='com.nimbusds' name='nimbus-jose-jwt' version='2.16' />
+    </compile>
+  </dependencies>
   <plugins />
   <runtimePluginRequirements />
   <behavior />

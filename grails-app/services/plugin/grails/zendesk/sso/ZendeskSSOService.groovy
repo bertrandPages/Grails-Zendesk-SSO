@@ -1,5 +1,13 @@
 package plugin.grails.zendesk.sso
 
+import com.nimbusds.jose.JWSAlgorithm
+import com.nimbusds.jose.JWSHeader
+import com.nimbusds.jose.JWSObject
+import com.nimbusds.jose.JWSSigner
+import com.nimbusds.jose.Payload
+import com.nimbusds.jose.crypto.MACSigner
+import com.nimbusds.jwt.JWTClaimsSet
+
 class ZendeskSSOService {
 
     def grailsApplication
@@ -7,13 +15,13 @@ class ZendeskSSOService {
     /**
      * Keep informations from application to generate url and generate callback url
      * @param userId userId in your application
-     * @param timestamp timestamp send by zendesk or generate
+     * @param returnTo return to url provides by zendesk
      * @param organization (optional)
      * @param tags (optional)
      * @param remotePhotoUrl (optional)
      * @return url to login in zendesk
      */
-    def zendeskLoginBackURL(userId, timestamp, organization = null, tags = null, remotePhotoUrl = null){
+    def zendeskLoginBackURL(userId, returnTo = null, organization = null, tags = null, remotePhotoUrl = null){
         String className = grailsApplication.config.grails.plugins.zendesk.userDomainClassName
 
         def user = grailsApplication.getClassForName(className).get(userId)
@@ -39,39 +47,62 @@ class ZendeskSSOService {
         }
 
         def entries = [name:name.join(" "), email:email, external_id:externalId?:"", organization:organization?: "",
-                tags:tags?: "", remote_photo_url:remotePhotoUrl?:"", timestamp:timestamp]
+                tags:tags?: "", remote_photo_url:remotePhotoUrl?:""]
 
-        return generateUrl(entries)
+        def jwtString = generateHash(entries)
+        if(jwtString){
+            return generateUrl(jwtString, returnTo)
+        }
+        return null
     }
 
     /**
      * Generate hash code to be verified by zendesk with secret token shared with zendesk
-     * @param entries other paramaters to generate hash : name, email, external_id, organization, tags, remote_photo_url and timestamp
-     * @return hash code to be verified by zendesk
+     * @param entries other paramaters to generate jwt code : name, email, external_id, organization, tags, remote_photo_url and timestamp
+     * @return jwt code to be verified by zendesk
      */
     private generateHash(Map entries){
-        def params = []
-        params << entries.name
-        params << entries.email
-        params << entries.external_id ?: ""
-        params << entries.organization ?: ""
-        params << entries.tags ?: ""
-        params << entries.remote_photo_url ?: ""
-        params << grailsApplication.config.grails.plugins.zendesk.secret
-        params << entries.timestamp
-        def input = params.join('|')
-        return input.encodeAsMD5()
+        def sharedKey = grailsApplication.config.grails.plugins.zendesk.secret
+
+        JWTClaimsSet jwtClaims = new JWTClaimsSet();
+        jwtClaims.setIssueTime(new Date());
+        jwtClaims.setJWTID(UUID.randomUUID().toString());
+        def name = entries.name
+        jwtClaims.setCustomClaim("name", name);
+        jwtClaims.setCustomClaim("email", entries.email);
+        jwtClaims.setCustomClaim("external_id", entries.external_id);
+
+        // Create JWS header with HS256 algorithm
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
+        header.setContentType("text/plain");
+        // Create JWS object
+        JWSObject jwsObject = new JWSObject(header, new Payload(jwtClaims.toJSONObject()));
+
+        // Create HMAC signer
+        JWSSigner signer = new MACSigner(sharedKey.getBytes());
+
+        try {
+            jwsObject.sign(signer);
+        } catch(com.nimbusds.jose.JOSEException e) {
+            System.err.println("Error signing JWT: " + e.getMessage());
+            return null
+        }
+        // Serialise to JWT compact form
+        return jwsObject.serialize();
     }
 
     /**
-     * generate callback url to login in zendesk
-     * @param entries parameters needed to generate url : name, email, external_id, organization, tags, remote_photo_url and timestamp
-     * @return
+     * Generate url to call zendesk authentication
+     * @param jwtString jwt code
+     * @param returnTo return to url provides by zendesk
+     * @return url to login in zendesk
      */
-    private generateUrl(Map entries){
-        def url = grailsApplication.config.grails.plugins.zendesk.baseURL + "?"
-        entries.hash = generateHash(entries)
-        url += entries.findAll {it.value && it.value != ""}.collect {"${it.key}=${it.value}"}.join('&')
-        return url
+    private generateUrl(String jwtString, String returnTo){
+        def baseUrl = grailsApplication.config.grails.plugins.zendesk.baseURL
+        if(returnTo){
+            return baseUrl + "jwt?jwt=" + jwtString + "&return_to=" + returnTo
+        } else {
+            return baseUrl + "jwt?jwt=" + jwtString
+        }
     }
 }

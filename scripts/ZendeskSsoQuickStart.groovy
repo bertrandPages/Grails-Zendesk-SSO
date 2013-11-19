@@ -67,6 +67,8 @@ private parseArgs() {
 
 private void copyControllersAndViews() {
     ant.mkdir dir: "$appDir/views/zendesk"
+    copyFile "$templateDir/authZendesk.gsp.template", "$appDir/views/zendesk/authZendesk.gsp"
+    copyFile "$templateDir/logout.gsp.template", "$appDir/views/zendesk/logout.gsp"
     copyFile "$templateDir/ZendeskController.groovy.template", "$appDir/controllers/ZendeskController.groovy"
 }
 
@@ -76,7 +78,8 @@ private void updateConfig() {
     if (configFile.exists()) {
         configFile.withWriterAppend {
             it.writeLine '\n// Added by the Zendesk SSO plugin:'
-            it.writeLine "grails.plugins.zendesk.baseURL = 'https://${urlDomain}.zendesk.com/access/remoteauth'"
+            it.writeLine "grails.plugins.zendesk.domain = '${urlDomain}'"
+            it.writeLine "grails.plugins.zendesk.baseURL = 'https://${urlDomain}.zendesk.com/access/'"
             it.writeLine "grails.plugins.zendesk.secret = 'ChangeZendeskSecret'"
             it.writeLine "grails.plugins.zendesk.externalId = true"
             it.writeLine "grails.plugins.zendesk.userDomainClassName = '${packageName}.$userClassName'"

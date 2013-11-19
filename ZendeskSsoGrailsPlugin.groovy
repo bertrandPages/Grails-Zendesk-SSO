@@ -1,6 +1,6 @@
 class ZendeskSsoGrailsPlugin {
     // the plugin version
-    def version = "0.1.7"
+    def version = "0.2.5"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0.4 > *"
     // the other plugins this plugin depends on
@@ -10,12 +10,11 @@ class ZendeskSsoGrailsPlugin {
             "grails-app/views/error.gsp"
     ]
 
-    // TODO Fill in these fields
     def title = "Zendesk Sso Plugin" // Headline display name of the plugin
     def author = "Bertrand Pages"
     def authorEmail = "bpages@doc4web.com"
     def description = '''\
-Brief summary/description of the plugin.
+This plugin allows application to interact with zendesk and particularly with the remote auth functionality.
 '''
 
     // URL to the plugin's documentation

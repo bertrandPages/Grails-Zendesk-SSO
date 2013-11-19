@@ -1,0 +1,49 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Zendesk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Styles -->
+    <r:require modules="zendeskPlugin"/>
+    <r:layoutResources />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+<body>
+
+  <g:link url="https://github.com/bertrandPages/Grails-Zendesk-SSO" class="forkme" style="background-image: url(${r.resource(plugin:'zendesk-sso', dir: 'images', file:'logo.png')})">
+    Fork me on Github
+  </g:link>
+
+  <div class="application">
+  	<div class="header">
+      <h1 id="logo">
+        <g:link url="http://${domain}.zendesk.com" style="background-image: url(${g.createLinkTo(plugin:'zendesk-sso', dir: 'images', file:'logo.png')})">
+          Zendesk Grails Integration
+        </g:link>
+      </h1>
+  	</div>
+  	<form>
+  		<p class="input">
+  			<label for="email"><g:message code="plugin.zendesk.email"/></label>
+  			<input name="email" id="email" type="text" />
+  		</p>
+  		<p class="input">
+  			<label for="password"><g:message code="plugin.zendesk.password"/></label>
+  			<input name="password" id="password" type="password" />
+  		</p>
+  		<p class="actions">
+  			<input type="submit" value="${message(code:'plugin.zendesk.login')}" />
+  			<a href="#"><g:message code="plugin.zendesk.password.lost"/></a>
+  		</p>
+  	</form>
+  </div>
+</body>
+</html>
