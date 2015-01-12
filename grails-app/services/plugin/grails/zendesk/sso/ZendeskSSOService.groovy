@@ -71,6 +71,10 @@ class ZendeskSSOService {
         jwtClaims.setCustomClaim("name", name);
         jwtClaims.setCustomClaim("email", entries.email);
         jwtClaims.setCustomClaim("external_id", entries.external_id);
+        if(entries.tags) jwtClaims.setCustomClaim("tags", entries.tags);
+        if(entries.organization) jwtClaims.setCustomClaim("organization", entries.organization);
+        if(entries.remote_photo_url) jwtClaims.setCustomClaim("remote_photo_url", entries.remote_photo_url);
+
 
         // Create JWS header with HS256 algorithm
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
